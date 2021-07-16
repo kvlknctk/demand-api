@@ -7,3 +7,4 @@ module.exports.initialService = require('./initial.service');
 
 /* Admin Service */
 module.exports.adminService = require('./admin.service');
+module.exports.categoryService = require('./category.service');

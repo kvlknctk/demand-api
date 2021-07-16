@@ -34,6 +34,11 @@ const categorySchema = mongoose.Schema(
       default: null,
       ref: 'Category',
     },
+    company: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: null,
+      ref: 'Company',
+    },
     level: {
       type: Number,
       default: 0,

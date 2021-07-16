@@ -3,6 +3,7 @@ module.exports.User = require('./user.model');
 module.exports.Barcode = require('./barcode.model');
 module.exports.Category = require('./category.model');
 module.exports.Company = require('./company.model');
+module.exports.Order = require('./order.model');
 module.exports.Item = require('./item.model');
 module.exports.Session = require('./session.model');
 module.exports.Zone = require('./zone.model');
