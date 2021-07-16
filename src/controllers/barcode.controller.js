@@ -1,12 +1,18 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { initialService } = require('../services');
+const ApiError = require('../utils/ApiError');
+const { initialService, barcodeService } = require('../services');
 
 const getCompanyWithBarcode = catchAsync(async (req, res) => {
   const { code } = req.params;
-  console.log({ code });
+
+  const barcode = await barcodeService.getCompanyFromBarcode(code);
+  if (!barcode) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Barcode not found');
+  }
+  console.log({ barcode });
   /* const code = await initialService.fakerBarcode(); */
-  res.status(httpStatus.CREATED).send(code);
+  res.status(httpStatus.CREATED).send(barcode);
 });
 
 module.exports = {

@@ -9,10 +9,14 @@ const barcodeSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    code: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     company: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Company',
-      // required: true,
     },
   },
   {

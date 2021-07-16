@@ -12,7 +12,7 @@ const getCompanyFromBarcode = async (code) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }*/
 
-  return Barcode.findById(code);
+  return Barcode.findById(code).populate('company');
 };
 
 const readedBarcode = async (code) => {

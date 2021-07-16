@@ -3,6 +3,7 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
 const barcodeRoute = require('./barcode.route');
+const adminRoute = require('./admin.route');
 const initialRoute = require('./initial.route');
 const config = require('../../config/config');
 
@@ -20,6 +21,11 @@ const defaultRoutes = [
   {
     path: '/barcodes',
     route: barcodeRoute,
+  },
+  /* Admin */
+  {
+    path: '/admin',
+    route: adminRoute,
   },
   {
     path: '/setups',
