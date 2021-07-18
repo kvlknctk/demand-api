@@ -8,7 +8,7 @@ const getCompanyWithBarcode = catchAsync(async (req, res) => {
 
   const barcode = await barcodeService.getCompanyFromBarcode(code);
   if (!barcode) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Barcode not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Zone not found');
   }
   console.log({ barcode });
   /* const code = await initialService.fakerBarcode(); */
