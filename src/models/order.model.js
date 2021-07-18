@@ -9,6 +9,11 @@ const orderSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    lastStatus: {
+      type: String,
+      enum: ['new', 'approved', 'waited', 'arrived', 'cancelled'],
+      default: 'new',
+    },
     items: {
       type: Array,
     },

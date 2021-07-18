@@ -5,6 +5,7 @@ const allRoles = {
     'manageUsers',
     'getDashboard',
     'getEmployees',
+    /* Categories Order */
     'getOrders',
     /* Categories Admin */
     'getCategory',

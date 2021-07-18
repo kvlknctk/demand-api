@@ -42,6 +42,7 @@ router.route('/categories').post(auth('createCategory'), categoryImage.any(), ad
 router.route('/categories/:categoryId').delete(auth('createCategory'), adminController.deleteCategory);
 router.route('/categories/:categoryId').get(auth('getCategory'), adminController.getCategory);
 router.route('/categories/:categoryId').post(auth('updateCategory'), adminController.updateCategory);
+router.route('/:companyId/orders').get(auth('getOrders'), adminController.getOrders);
 
 /*
 router.route('/adverts').get(auth('getAdverts'), adminController.getAdverts);
