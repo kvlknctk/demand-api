@@ -6,6 +6,7 @@ const barcodeRoute = require('./barcode.route');
 const adminRoute = require('./admin/admin.route');
 const categoryRoute = require('./category.route');
 const initialRoute = require('./initial.route');
+const productRoute = require('./product.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -26,6 +27,10 @@ const defaultRoutes = [
   {
     path: '/categories',
     route: categoryRoute,
+  },
+  {
+    path: '/products',
+    route: productRoute,
   },
   /* Admin */
   {

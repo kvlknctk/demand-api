@@ -12,6 +12,9 @@ const allRoles = {
     'getCategories',
     'createCategory',
     'updateCategory',
+
+    /* Products Admin */
+    'getProducts',
   ],
 };
 

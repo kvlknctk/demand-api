@@ -43,7 +43,7 @@ router.route('/categories/:categoryId').delete(auth('createCategory'), adminCont
 router.route('/categories/:categoryId').get(auth('getCategory'), adminController.getCategory);
 router.route('/categories/:categoryId').post(auth('updateCategory'), adminController.updateCategory);
 router.route('/:companyId/orders').get(auth('getOrders'), adminController.getOrders);
-
+router.route('/products').get(auth('getProducts'), adminController.getProducts);
 /*
 router.route('/adverts').get(auth('getAdverts'), adminController.getAdverts);
 router.route('/adverts/:advertId').post(auth('updateAdvert'), adminController.updateAdvert);

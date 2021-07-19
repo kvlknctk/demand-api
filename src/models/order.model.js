@@ -4,11 +4,6 @@ const { toJSON, paginate } = require('./plugins');
 
 const orderSchema = mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     lastStatus: {
       type: String,
       enum: ['new', 'approved', 'waited', 'arrived', 'cancelled'],
@@ -20,6 +15,10 @@ const orderSchema = mongoose.Schema(
     company: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Company',
+    },
+    zone: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Zone',
     },
   },
   {
