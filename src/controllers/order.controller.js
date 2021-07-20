@@ -23,6 +23,17 @@ const getOrder = catchAsync(async (req, res) => {
   res.send({ order });
 });
 
+const createOrder = catchAsync(async (req, res) => {
+  const order = await orderService.createOrder({
+    items: req.body.items,
+    sessions: req.body.sessions,
+  });
+
+  await pusher.trigger('this.props.user.id', 'orderCompleted', { order });
+
+  res.status(httpStatus.CREATED).send({ order });
+});
+
 const getMyOrders = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'relation']);
@@ -146,6 +157,7 @@ module.exports = {
   updateOrder,
   getOrders,
   createPayment,
+  createOrder,
   iyziCallback,
   applePayment,
 };
