@@ -24,7 +24,7 @@ const path = require('path');
 const { Order, User, Bought } = require('./../models');
 
 const dashboard = catchAsync(async (req, res) => {
-  const orders = await Order.find({});
+  const orders = await Order.find({}).sort([['createdAt', -1]]);
   //const priceTotal = lazySumOrder(moneyCount);
 
   res.send({ orders });
@@ -136,6 +136,13 @@ const getOrders = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const approveOrder = catchAsync(async (req, res) => {
+  /*const filter = pick(req.query, ['title', 'role']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'relation']);*/
+  const result = await orderService.acknowledgeOrder(req.params.orderId);
+  res.send(result);
+});
+
 const getCategories = catchAsync(async (req, res) => {
   const result = await categoryService.getCategoryTree();
   res.send(result);
@@ -208,7 +215,9 @@ module.exports = {
   getUsers,
   getUser,
   getProducts,
+
   getOrders,
+  approveOrder,
 
   // PAGE
   getPages,

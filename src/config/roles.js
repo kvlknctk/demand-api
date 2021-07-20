@@ -7,6 +7,7 @@ const allRoles = {
     'getEmployees',
     /* Categories Order */
     'getOrders',
+    'approveOrder',
     /* Categories Admin */
     'getCategory',
     'getCategories',
