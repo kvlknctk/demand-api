@@ -4,7 +4,7 @@ const orderController = require('../../controllers/order.controller');
 
 const router = express.Router();
 
-router.route('/create').post(orderController.createPayment);
+router.route('/create').post(orderController.createOrder);
 
 router.route('/getMyOrders').get(auth(), orderController.getMyOrders);
 
