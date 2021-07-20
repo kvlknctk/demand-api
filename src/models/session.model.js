@@ -16,9 +16,9 @@ const sessionSchema = mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Company',
     },
-    zone: {
+    barcode: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'Zone',
+      ref: 'Barcode',
     },
   },
   {

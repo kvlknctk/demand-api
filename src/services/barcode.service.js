@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
-const { User, Barcode } = require('../models');
+const { User, Barcode, Session } = require('../models');
 const ApiError = require('../utils/ApiError');
+const { v1: uuidv1 } = require('uuid');
 
 /**
  * Create a user
@@ -20,7 +21,18 @@ const readedBarcode = async (code) => {
   return code;
 };
 
+const createSession = async (barcode) => {
+  let sessionNumber = uuidv1();
+  return Session.create({
+    barcode: barcode.id,
+    sessionNumber,
+    company: barcode.company,
+    customerIpAddres: 'askdjhaksdjhaksjdhask',
+  });
+};
+
 module.exports = {
+  createSession,
   getCompanyFromBarcode,
   readedBarcode,
 };
