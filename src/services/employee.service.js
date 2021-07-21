@@ -23,10 +23,9 @@ const createEmployeeWithForm = async (employeeBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryEmployees = async (filter, options) => {
-  const products = await Employee.paginateRelation(filter, options);
-  return products;
+  const employees = await Employee.paginateRelation(filter, options);
+  return employees;
 };
-
 
 /**
  * Get employee by id
