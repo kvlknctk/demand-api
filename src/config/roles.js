@@ -18,6 +18,11 @@ const allRoles = {
     'getProducts',
     'createProduct',
     'deleteProduct',
+
+    /* Employee Admin */
+    'getEmployees',
+    'createEmployee',
+    'deleteEmployee',
   ],
 };
 

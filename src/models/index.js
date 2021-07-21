@@ -7,3 +7,4 @@ module.exports.Order = require('./order.model');
 module.exports.Item = require('./item.model');
 module.exports.Session = require('./session.model');
 module.exports.Product = require('./product.model');
+module.exports.Employee = require('./employee.model');

@@ -3,7 +3,7 @@ const auth = require('../../../middlewares/auth');
 const authSoft = require('../../../middlewares/authSoft');
 const validate = require('../../../middlewares/validate');
 const userValidation = require('../../../validations/user.validation');
-const { adminController, productController } = require('../../../controllers');
+const { adminController, productController, employeeController } = require('../../../controllers');
 const multer = require('multer');
 
 // upload image
@@ -59,6 +59,10 @@ router.route('/:companyId/orders').get(auth('getOrders'), adminController.getOrd
 router.route('/products').get(auth('getProducts'), adminController.getProducts);
 router.route('/products').post(auth('createProduct'), productImage.any(), adminController.createProduct);
 router.route('/products/:productId').delete(auth('deleteProduct'), productController.deleteProduct);
+
+router.route('/employees').get(auth('getEmployees'), employeeController.getEmployees);
+router.route('/employees').post(auth('createEmployee'), employeeController.createEmployee);
+router.route('/employees/:employeId').delete(auth('deleteEmployee'), employeeController.deleteEmployee);
 
 router.route('/orders').get(auth('getOrders'), adminController.getOrders);
 router.route('/orders/:orderId/approve').get(auth('approveOrder'), adminController.approveOrder);

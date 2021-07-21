@@ -7,3 +7,4 @@ module.exports.productController = require('./product.controller');
 /* Admin Controller */
 module.exports.adminController = require('./admin.controller');
 module.exports.serviceController = require('./category.controller');
+module.exports.employeeController = require('./employee.controller');

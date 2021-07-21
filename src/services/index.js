@@ -10,3 +10,4 @@ module.exports.orderService = require('./order.service');
 /* Admin Service */
 module.exports.adminService = require('./admin.service');
 module.exports.categoryService = require('./category.service');
+module.exports.employeeService = require('./employee.service');
