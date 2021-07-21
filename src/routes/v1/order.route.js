@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.route('/create').post(orderController.createOrder);
 
-router.route('/getMyOrders').get(auth(), orderController.getMyOrders);
+router.route('/getMyOrdersViaMySessions').post(orderController.getMyOrdersViaMySessions);
 
 router.route('/getMyOrders/:orderId').get(auth(), orderController.getOrder);
 

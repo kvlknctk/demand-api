@@ -5,6 +5,7 @@ const { barcodeService } = require('../services');
 
 const getCompanyWithBarcode = catchAsync(async (req, res) => {
   const { code } = req.params;
+  console.log(code);
 
   const barcode = await barcodeService.getCompanyFromBarcode(code);
   if (!barcode) {

@@ -36,6 +36,11 @@ const queryOrders = async (filter, options) => {
   return orders;
 };
 
+const queryOrdersViaSessions = async (sessions) => {
+  const orders = await Order.find({}).sort([['createdAt', -1]]);
+  return orders;
+};
+
 const getOrdersByUserId = async (userId) => {
   const orders = await Order.find({ user: userId });
   return orders;
@@ -133,6 +138,7 @@ module.exports = {
   getOrderById,
   updateOrderById,
   queryOrders,
+  queryOrdersViaSessions,
   createOrder,
   createOrderApple,
   createOrderCampaign,

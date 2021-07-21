@@ -41,6 +41,12 @@ const getMyOrders = catchAsync(async (req, res) => {
   res.send({ orders: result });
 });
 
+const getMyOrdersViaMySessions = catchAsync(async (req, res) => {
+  const result = await orderService.queryOrdersViaSessions(req.body.sessions);
+  console.log({ result });
+  res.send({ orders: result });
+});
+
 const updateOrder = catchAsync(async (req, res) => {
   const product = await orderService.updateOrderById(req.params.orderId, req.body);
   res.send(product);
@@ -154,6 +160,7 @@ const applePayment = catchAsync(async (req, res) => {
 module.exports = {
   getOrder,
   getMyOrders,
+  getMyOrdersViaMySessions,
   updateOrder,
   getOrders,
   createPayment,
