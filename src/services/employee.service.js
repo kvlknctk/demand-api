@@ -27,10 +27,6 @@ const queryEmployees = async (filter, options) => {
   return products;
 };
 
-const queryProducts2 = async (category) => {
-  const products = await Employee.find({ category: category });
-  return products;
-};
 
 /**
  * Get employee by id
