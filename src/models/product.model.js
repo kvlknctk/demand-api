@@ -13,16 +13,14 @@ const productSchema = mongoose.Schema(
       required: true,
     },
 
+    image: {
+      type: String,
+    },
+
     images: {
       type: Array,
     },
-    comments: {
-      type: Array,
-    },
-    /* add unapproved comments.
-    comments: {
-        type    : Array
-    },*/
+
     salePrice: {
       type: Number,
       required: true,
@@ -30,24 +28,13 @@ const productSchema = mongoose.Schema(
     discount: {
       type: Number,
     },
-    stock: {
-      type: Number,
-    },
-    stockCode: {
-      type: String,
-    },
-    barcodeCode: {
-      type: String,
-    },
     pictures: {
       type: Array,
     },
     size: {
       type: Array,
     },
-    colors: {
-      type: Array,
-    },
+
     tags: {
       type: Array,
     },
@@ -58,15 +45,11 @@ const productSchema = mongoose.Schema(
     shortDetails: {
       type: String,
     },
-    rating: {
-      type: Number,
-    },
+
     description: {
       type: String,
     },
-    new: {
-      type: Boolean,
-    },
+
     sale: {
       type: Boolean,
     },
