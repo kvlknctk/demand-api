@@ -49,7 +49,6 @@ const verifyEmail = catchAsync(async (req, res) => {
 
 const info = catchAsync(async (req, res) => {
   const user = req.user;
-  console.log({ user });
   //const balance = await cashierService.getBalance(user.id);
 
   res.send({ user, balance: 0 });
