@@ -83,31 +83,14 @@ const createProduct = catchAsync(async (req, res) => {
     const files = req.files;
     console.log({ files, body: req.body });
 
-    const cretedProduct = await productService.createProduct(req.body);
+    const cretedProduct = await productService.createProduct({ ...req.body, image: files[0].filename });
     console.log(cretedProduct);
-    /*
-    await sharp(req.body.image).resize({ width: 640, height: 480 }).jpeg({ quality: 95 }).toFile(`products/resized/fa.png`);
-*/
+    await sharp(files[0].path)
+      .resize({ width: 640, height: 480 })
+      .jpeg({ quality: 95 })
+      .toFile(`${files[0].destination}/resized/${files[0].filename}`);
 
-    if (!files) {
-      /* res.status(400).send({
-        status: false,
-        data: 'Resim seçilmedi.',
-      });*/
-    } else {
-      /*  for (let po in photos) {
-        // Generate Big Image
-        await sharp(photos[po].path)
-          .resize({ width: 640, height: 480 })
-          .jpeg({ quality: 70 })
-          .toFile(`${photos[po].destination}/resized/${photos[po].filename}`);
-
-        await advertService.addImage(req.params.advertId, photos[po].filename);
-      }*/
-
-      // send response
-      res.send({ product: 'OK' });
-    }
+    res.send({ product: 'OK' });
   } catch (err) {
     res.status(500).send(err);
   }
