@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate, paginateRelation } = require('./plugins');
 
 const employeeSchema = mongoose.Schema(
   {
@@ -36,6 +36,7 @@ const employeeSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 employeeSchema.plugin(toJSON);
 employeeSchema.plugin(paginate);
+employeeSchema.plugin(paginateRelation);
 
 /**
  * @typedef Employee
