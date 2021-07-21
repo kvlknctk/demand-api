@@ -20,9 +20,6 @@ const employeeSchema = mongoose.Schema(
     email: {
       type: String,
     },
-    address: {
-      type: String,
-    },
     company: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Company',

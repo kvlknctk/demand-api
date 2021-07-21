@@ -16,8 +16,8 @@ const updateEmployee = catchAsync(async (req, res) => {
 });
 
 const deleteEmployee = catchAsync(async (req, res) => {
-  const product = await employeeService.deleteProductById(req.params.employeeId);
-  res.send(product);
+  const employee = await employeeService.deleteEmployeeById(req.params.employeeId);
+  res.send(employee);
 });
 
 const createEmployee = catchAsync(async (req, res) => {

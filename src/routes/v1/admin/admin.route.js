@@ -37,7 +37,7 @@ router.route('/products/:productId').delete(auth('deleteProduct'), productContro
 
 router.route('/employees').get(auth('getEmployees'), employeeController.getEmployees);
 router.route('/employees').post(auth('createEmployee'), employeeController.createEmployee);
-router.route('/employees/:employeId').delete(auth('deleteEmployee'), employeeController.deleteEmployee);
+router.route('/employees/:employeeId').delete(auth('deleteEmployee'), employeeController.deleteEmployee);
 
 router.route('/barcodes').get(auth('getBarcodes'), barcodeController.getBarcodes);
 router.route('/barcodes').post(auth('createBarcode'), barcodeController.createBarcode);
