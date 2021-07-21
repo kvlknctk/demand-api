@@ -6,5 +6,4 @@ module.exports.Company = require('./company.model');
 module.exports.Order = require('./order.model');
 module.exports.Item = require('./item.model');
 module.exports.Session = require('./session.model');
-module.exports.Zone = require('./zone.model');
 module.exports.Product = require('./product.model');

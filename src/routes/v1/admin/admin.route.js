@@ -3,7 +3,7 @@ const auth = require('../../../middlewares/auth');
 const authSoft = require('../../../middlewares/authSoft');
 const validate = require('../../../middlewares/validate');
 const userValidation = require('../../../validations/user.validation');
-const { adminController } = require('../../../controllers');
+const { adminController, productController } = require('../../../controllers');
 const multer = require('multer');
 
 // upload image
@@ -53,9 +53,13 @@ router.route('/categories').post(auth('createCategory'), categoryImage.any(), ad
 router.route('/categories/:categoryId').delete(auth('createCategory'), adminController.deleteCategory);
 router.route('/categories/:categoryId').get(auth('getCategory'), adminController.getCategory);
 router.route('/categories/:categoryId').post(auth('updateCategory'), adminController.updateCategory);
+
 router.route('/:companyId/orders').get(auth('getOrders'), adminController.getOrders);
+
 router.route('/products').get(auth('getProducts'), adminController.getProducts);
 router.route('/products').post(auth('createProduct'), productImage.any(), adminController.createProduct);
+router.route('/products/:productId').delete(auth('deleteProduct'), productController.deleteProduct);
+
 router.route('/orders').get(auth('getOrders'), adminController.getOrders);
 router.route('/orders/:orderId/approve').get(auth('approveOrder'), adminController.approveOrder);
 
