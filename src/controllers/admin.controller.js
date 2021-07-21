@@ -3,20 +3,7 @@ const pick = require('../utils/pick');
 /*const { lazySumOrder } = require('../utils/lazySum');*/
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const {
-  adminService,
-  advertService,
-  pageService,
-  userService,
-  productService,
-  orderService,
-  categoryService,
-  campaignService,
-  otpService,
-  providerService,
-  boughtService,
-  locationService,
-} = require('../services');
+const { adminService, userService, productService, orderService, categoryService } = require('../services');
 const auth = require('../middlewares/auth');
 const fs = require('file-system');
 const sharp = require('sharp');
