@@ -81,16 +81,18 @@ const uploadAdvertImage = catchAsync(async (req, res) => {
 const createProduct = catchAsync(async (req, res) => {
   try {
     const files = req.files;
-    console.log({ files, body: req.body });
 
+    // Create product with image file name.
     const cretedProduct = await productService.createProduct({ ...req.body, image: files[0].filename });
-    console.log(cretedProduct);
+
+    // We need to create thumbnail image for fast views.
     await sharp(files[0].path)
       .resize({ width: 640, height: 480 })
       .jpeg({ quality: 95 })
       .toFile(`${files[0].destination}/resized/${files[0].filename}`);
 
-    res.send({ product: 'OK' });
+    // Return a The created product
+    res.send({ product: cretedProduct });
   } catch (err) {
     res.status(500).send(err);
   }
