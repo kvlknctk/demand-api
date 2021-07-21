@@ -23,6 +23,11 @@ const allRoles = {
     'getEmployees',
     'createEmployee',
     'deleteEmployee',
+
+    /* Barcodes Admin */
+    'getBarcodes',
+    'createBarcode',
+    'deleteBarcode',
   ],
 };
 
