@@ -8,10 +8,6 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    slug: {
-      type: String,
-      required: true,
-    },
 
     image: {
       type: String,
@@ -21,8 +17,9 @@ const productSchema = mongoose.Schema(
       type: Array,
     },
 
-    salePrice: {
-      type: Number,
+    price: {
+      type: String,
+      default: '1.0',
       required: true,
     },
     discount: {
@@ -46,18 +43,14 @@ const productSchema = mongoose.Schema(
       type: String,
     },
 
-    description: {
+    body: {
       type: String,
     },
 
-    sale: {
+    saleActive: {
       type: Boolean,
     },
-    price: {
-      type: String,
-      default: '1.0',
-      required: true,
-    },
+
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',

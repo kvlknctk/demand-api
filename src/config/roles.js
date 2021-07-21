@@ -16,6 +16,7 @@ const allRoles = {
 
     /* Products Admin */
     'getProducts',
+    'createProduct',
   ],
 };
 

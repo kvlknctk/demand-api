@@ -28,9 +28,20 @@ const categoryStorage = multer.diskStorage({
   },
 });
 
+const productStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'upload/products/');
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + '.png');
+  },
+});
+
 //const upload = multer({ dest : 'upload/'});
 const upload = multer({ storage: storage });
 const categoryImage = multer({ storage: categoryStorage });
+const productImage = multer({ storage: productStorage });
 
 const router = express.Router();
 // router.route('/dashboard').get(auth('getDashboard'), adminController.getDashboard);
@@ -44,6 +55,7 @@ router.route('/categories/:categoryId').get(auth('getCategory'), adminController
 router.route('/categories/:categoryId').post(auth('updateCategory'), adminController.updateCategory);
 router.route('/:companyId/orders').get(auth('getOrders'), adminController.getOrders);
 router.route('/products').get(auth('getProducts'), adminController.getProducts);
+router.route('/products').post(auth('createProduct'), productImage.any(), adminController.createProduct);
 router.route('/orders').get(auth('getOrders'), adminController.getOrders);
 router.route('/orders/:orderId/approve').get(auth('approveOrder'), adminController.approveOrder);
 

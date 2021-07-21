@@ -48,6 +48,8 @@ const initialContent = catchAsync(async (req, res) => {
 });
 
 const createProduct = catchAsync(async (req, res) => {
+  console.log({ req });
+  console.log({ body: req.body });
   const product = await productService.createProduct(req.body);
   res.status(httpStatus.CREATED).send(product);
 });

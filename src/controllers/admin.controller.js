@@ -78,6 +78,41 @@ const uploadAdvertImage = catchAsync(async (req, res) => {
   }
 });
 
+const createProduct = catchAsync(async (req, res) => {
+  try {
+    const files = req.files;
+    console.log({ files, body: req.body });
+
+    const cretedProduct = await productService.createProduct(req.body);
+    console.log(cretedProduct);
+    /*
+    await sharp(req.body.image).resize({ width: 640, height: 480 }).jpeg({ quality: 95 }).toFile(`products/resized/fa.png`);
+*/
+
+    if (!files) {
+      /* res.status(400).send({
+        status: false,
+        data: 'Resim seçilmedi.',
+      });*/
+    } else {
+      /*  for (let po in photos) {
+        // Generate Big Image
+        await sharp(photos[po].path)
+          .resize({ width: 640, height: 480 })
+          .jpeg({ quality: 70 })
+          .toFile(`${photos[po].destination}/resized/${photos[po].filename}`);
+
+        await advertService.addImage(req.params.advertId, photos[po].filename);
+      }*/
+
+      // send response
+      res.send({ product: 'OK' });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
@@ -215,6 +250,7 @@ module.exports = {
   getUsers,
   getUser,
   getProducts,
+  createProduct,
 
   getOrders,
   approveOrder,

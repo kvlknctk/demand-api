@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const {User, Product} = require('../models');
+const { User, Product } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { v1: uuidv1 } = require('uuid');
 
@@ -8,8 +8,8 @@ const { v1: uuidv1 } = require('uuid');
  * @returns {Promise<User>}
  */
 const getInitialProducts = async () => {
-    const initial = await Product.find().populate('category');
-    return initial;
+  const initial = await Product.find().populate('category');
+  return initial;
 };
 
 /**
@@ -18,13 +18,8 @@ const getInitialProducts = async () => {
  * @returns {Promise<User>}
  */
 const createProduct = async (productBody) => {
-
-    if (await Product.uniqueSlugControl(productBody.slug)) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'Bu isim daha daha önceden kullanılmıştır. İsim yanına varyasyon ekleyerek devam edebilirsiniz.');
-    }
-
-    const product = await Product.create(productBody);
-    return product;
+  const product = await Product.create(productBody);
+  return product;
 };
 
 /**
@@ -37,13 +32,13 @@ const createProduct = async (productBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryProducts = async (filter, options) => {
-    const products = await Product.paginateRelation(filter, options);
-    return products;
+  const products = await Product.paginateRelation(filter, options);
+  return products;
 };
 
 const queryProducts2 = async (category) => {
-    const products = await Product.find({category: category})
-    return products;
+  const products = await Product.find({ category: category });
+  return products;
 };
 
 /**
@@ -52,104 +47,105 @@ const queryProducts2 = async (category) => {
  * @returns {Promise<User>}
  */
 const getProductById = async (id) => {
-    return Product.findById(id).populate('category');
+  return Product.findById(id).populate('category');
 };
 
 const getProductBySlug = async (slug) => {
-    return Product.findOne({slug});
+  return Product.findOne({ slug });
 };
 
 const updateProductById = async (productId, updateBody) => {
-    const product = await getProductById(productId);
-    if (!product) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
-    }
+  const product = await getProductById(productId);
+  if (!product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+  }
 
-    Object.assign(product, updateBody);
-    await product.save();
-    return product;
+  Object.assign(product, updateBody);
+  await product.save();
+  return product;
 };
 
 const addCommentToProduct = async (productSlug, request) => {
-    console.log({productSlug})
-    const product = await getProductBySlug(productSlug);
-    if (!product) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
-    }
-    console.log('body', request.body.comment)
+  console.log({ productSlug });
+  const product = await getProductBySlug(productSlug);
+  if (!product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  console.log('body', request.body.comment);
 
-    const newComment = {
-        ...request.body.comment,
-        userName : request.user.name,
-        createdAt: new Date(),
-        active   : 0
-    }
+  const newComment = {
+    ...request.body.comment,
+    userName: request.user.name,
+    createdAt: new Date(),
+    active: 0,
+  };
 
-    let comments = product.comments.concat(newComment);
-    console.log({comments})
-    Object.assign(product, {comments});
-    await product.save();
-    return product;
+  let comments = product.comments.concat(newComment);
+  console.log({ comments });
+  Object.assign(product, { comments });
+  await product.save();
+  return product;
 };
 
 const deleteProductById = async (productId) => {
-    const product = await getProductById(productId);
-    if (!product) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
-    }
+  const product = await getProductById(productId);
+  if (!product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+  }
 
-    await product.remove();
-    return product;
+  await product.remove();
+  return product;
 };
 
 const addImage = async (productId, file) => {
-    const product = await getProductById(productId);
-    if (!product) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
-    }
+  const product = await getProductById(productId);
+  if (!product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+  }
 
-    Object.assign(product, {
-        images: [...product.images, {
-            id  : uuidv1(),
-            file,
-            featured : false
-        }]
-    });
-    await product.save();
-    return product;
+  Object.assign(product, {
+    images: [
+      ...product.images,
+      {
+        id: uuidv1(),
+        file,
+        featured: false,
+      },
+    ],
+  });
+  await product.save();
+  return product;
 };
 
-
 const setFeatureImage = async (productId, imageId) => {
-    const product = await getProductById(productId);
-    if (!product) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
-    }
-    console.log("manip")
+  const product = await getProductById(productId);
+  if (!product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  console.log('manip');
 
-    /* Object.assign(product, {
+  /* Object.assign(product, {
          images: [...product.images, {
              id  : uuidv1(),
              file,
              featured : false
          }]
      });*/
-    await product.save();
-    return product;
+  await product.save();
+  return product;
 };
 
-
 module.exports = {
-    getInitialProducts,
+  getInitialProducts,
 
-    queryProducts,
-    createProduct,
-    updateProductById,
-    deleteProductById,
-    queryProducts2,
-    getProductById,
-    addImage,
-    addCommentToProduct,
-    getProductBySlug,
-    setFeatureImage
+  queryProducts,
+  createProduct,
+  updateProductById,
+  deleteProductById,
+  queryProducts2,
+  getProductById,
+  addImage,
+  addCommentToProduct,
+  getProductBySlug,
+  setFeatureImage,
 };
