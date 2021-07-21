@@ -3,6 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const ApiError = require('../utils/ApiError');
 const pick = require('../utils/pick');
 const { barcodeService } = require('../services');
+const { User } = require('../models');
 
 const getBarcodes = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
@@ -22,6 +23,7 @@ const deleteBarcode = catchAsync(async (req, res) => {
 });
 
 const createBarcode = catchAsync(async (req, res) => {
+  console.log(req.headers.header1);
   const product = await barcodeService.createBarcodeWithForm(req.body);
   res.status(httpStatus.CREATED).send(product);
 });
