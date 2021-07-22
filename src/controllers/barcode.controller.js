@@ -45,7 +45,7 @@ const getRequiredDataWithBarcode = catchAsync(async (req, res) => {
   const { code } = req.params;
 
   const barcode = await barcodeService.getCompanyFromBarcode(code);
-  const categories = await categoryService.getCategoryTreeWithLimitedProduct(barcode.company.id, 3);
+  const categories = await categoryService.getCategoryTreeWithLimitedProduct(barcode.company.id, 4);
 
   if (!barcode) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Barcode not found');
