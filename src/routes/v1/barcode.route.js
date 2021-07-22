@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.route('/:code').get(barcodeController.getCompanyWithBarcode);
 router.route('/:code/createSession').get(barcodeController.createSessionFromBarcode);
+router.route('/:code/requiredData').get(barcodeController.getRequiredDataWithBarcode);
 
 module.exports = router;

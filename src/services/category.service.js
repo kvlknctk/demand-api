@@ -170,7 +170,11 @@ const getCategoryTreeWithLimitedProduct = async (company, limit) => {
       $lookup: {
         as: 'products',
         let: { local_id: '$_id' },
-        pipeline: [{ $match: { $expr: { $eq: ['$$local_id', '$category'] } } }, { $sort: { createdAt: 1 } }, { $limit: 2 }],
+        pipeline: [
+          { $match: { $expr: { $eq: ['$$local_id', '$category'] } } },
+          { $sort: { createdAt: 1 } },
+          { $limit: limit },
+        ],
         from: 'products',
       },
     },

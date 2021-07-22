@@ -34,9 +34,18 @@ const getCompanyWithBarcode = catchAsync(async (req, res) => {
   const barcode = await barcodeService.getCompanyFromBarcode(code);
   const categories = await categoryService.getCompanyCategoriesTree(barcode.company.id);
 
-  console.log('company', barcode.company.id);
-  console.log('categories', categories);
-  let products = 'asd';
+  if (!barcode) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Barcode not found');
+  }
+
+  res.status(httpStatus.CREATED).send({ barcode, company: barcode.company, categories });
+});
+
+const getRequiredDataWithBarcode = catchAsync(async (req, res) => {
+  const { code } = req.params;
+
+  const barcode = await barcodeService.getCompanyFromBarcode(code);
+  const categories = await categoryService.getCategoryTreeWithLimitedProduct(barcode.company.id, 3);
 
   if (!barcode) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Barcode not found');
@@ -65,5 +74,6 @@ module.exports = {
   updateBarcode,
   deleteBarcode,
   getCompanyWithBarcode,
+  getRequiredDataWithBarcode,
   createSessionFromBarcode,
 };
