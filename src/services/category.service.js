@@ -70,11 +70,7 @@ const getCategoryTree = async (company) => {
         root: [
           {
             $match: {
-              $and: [
-                { level: 1 },
-                { company: ObjectId(company) },
-                /*{ year: '2017' },*/
-              ],
+              $and: [{ level: 1 }, { company: ObjectId(company) }],
             },
           },
         ],
@@ -168,6 +164,117 @@ const getCategoryTree = async (company) => {
   return tree;
 };
 
+const getCategoryTreeWithLimitedProduct = async (company, limit) => {
+  const tree = await Category.aggregate([
+    {
+      $lookup: {
+        as: 'products',
+        let: { local_id: '$_id' },
+        pipeline: [{ $match: { $expr: { $eq: ['$$local_id', '$category'] } } }, { $sort: { createdAt: 1 } }, { $limit: 2 }],
+        from: 'products',
+      },
+    },
+    {
+      $facet: {
+        root: [
+          {
+            $match: {
+              $and: [{ level: 1 }, { company: ObjectId(company) }],
+            },
+          },
+        ],
+
+        children: [
+          { $match: { level: 2 } },
+
+          {
+            $graphLookup: {
+              from: 'Category',
+              startWith: '$_id',
+              connectFromField: '_id',
+              connectToField: 'parentId',
+              maxDepth: 0,
+              as: 'hierarchy',
+            },
+          },
+          { $sort: { _id: 1 } },
+        ],
+        grandchild: [
+          { $match: { level: 3 } },
+          {
+            $graphLookup: {
+              from: 'Category',
+              startWith: '$_id',
+              connectFromField: '_id',
+              connectToField: 'parentId',
+              maxDepth: 0,
+              as: 'hierarchy',
+            },
+          },
+          { $sort: { _id: 1 } },
+        ],
+      },
+    },
+    { $unwind: '$children' },
+    {
+      $project: {
+        root: 1,
+        'children.name': 1,
+        'children._id': 1,
+        'children.level': 1,
+        'children.icon': 1,
+        'children.color': 1,
+        'children.company': 1,
+        'children.products': 1,
+        'children.filters': 1,
+        'children.slug': 1,
+        'children.rate': 1,
+        'children.parentId': 1,
+        'children.hierarchy': {
+          $filter: {
+            input: '$grandchild',
+            as: 'sub_level',
+            cond: {
+              $eq: ['$$sub_level.parentId', '$children._id'],
+            },
+          },
+        },
+      },
+    },
+    { $group: { _id: '$root', children: { $push: '$children' } } },
+    { $project: { root: '$_id', children: 1 } },
+    { $unwind: '$root' },
+    {
+      $project: {
+        'root._id': 1,
+        'root.name': 1,
+        'root.slug': 1,
+        'root.color': 1,
+        'root.company': 1,
+        'root.products': 1,
+        'root.rate': 1,
+        'root.filters': 1,
+        'root.icon': {
+          $concat: [domain, '/upload/categories/', '$root.icon'],
+        },
+        'root.level': 1,
+        'root.hierarchy': {
+          $filter: {
+            input: '$children',
+            as: 'sub_level',
+            cond: {
+              $eq: ['$$sub_level.parentId', '$root._id'],
+            },
+          },
+        },
+      },
+    },
+    { $replaceRoot: { newRoot: '$root' } },
+  ]);
+
+  return tree;
+};
+
 /**
  * Get category by Slug
  * @param {string} slug
@@ -197,4 +304,5 @@ module.exports = {
   deleteCategory,
   getCategoryTree,
   getCompanyCategoriesTree,
+  getCategoryTreeWithLimitedProduct,
 };
