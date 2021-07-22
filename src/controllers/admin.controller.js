@@ -151,7 +151,7 @@ const approveOrder = catchAsync(async (req, res) => {
 });
 
 const getCategories = catchAsync(async (req, res) => {
-  const result = await categoryService.getCategoryTree();
+  const result = await categoryService.getCategoryTree('60f8974b69f33674268a83d9');
   res.send(result);
 });
 

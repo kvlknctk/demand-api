@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const ApiError = require('../utils/ApiError');
 const pick = require('../utils/pick');
-const { barcodeService } = require('../services');
+const { barcodeService, categoryService } = require('../services');
 const { User } = require('../models');
 
 const getBarcodes = catchAsync(async (req, res) => {
@@ -32,11 +32,17 @@ const getCompanyWithBarcode = catchAsync(async (req, res) => {
   const { code } = req.params;
 
   const barcode = await barcodeService.getCompanyFromBarcode(code);
+  const categories = await categoryService.getCompanyCategoriesTree(barcode.company.id);
+
+  console.log('company', barcode.company.id);
+  console.log('categories', categories);
+  let products = 'asd';
+
   if (!barcode) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Barcode not found');
   }
 
-  res.status(httpStatus.CREATED).send(barcode);
+  res.status(httpStatus.CREATED).send({ barcode, company: barcode.company, categories });
 });
 
 const createSessionFromBarcode = catchAsync(async (req, res) => {

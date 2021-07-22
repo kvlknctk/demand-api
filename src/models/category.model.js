@@ -35,7 +35,7 @@ const categorySchema = mongoose.Schema(
       ref: 'Category',
     },
     company: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.Mixed,
       default: null,
       ref: 'Company',
     },

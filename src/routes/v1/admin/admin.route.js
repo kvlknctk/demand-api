@@ -16,7 +16,18 @@ const productStorage = multer.diskStorage({
   },
 });
 
+const categoryStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'upload/categories/');
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + '.png');
+  },
+});
+
 const productImage = multer({ storage: productStorage });
+const categoryImage = multer({ storage: categoryStorage });
 
 const router = express.Router();
 // router.route('/dashboard').get(auth('getDashboard'), adminController.getDashboard);
@@ -24,7 +35,7 @@ const router = express.Router();
 router.route('/dashboard').get(auth('getDashboard'), adminController.dashboard);
 
 router.route('/categories').get(auth('getCategories'), adminController.getCategories);
-router.route('/categories').post(auth('createCategory'), adminController.createCategory);
+router.route('/categories').post(auth('createCategory'), categoryImage.any(), adminController.createCategory);
 router.route('/categories/:categoryId').delete(auth('createCategory'), adminController.deleteCategory);
 router.route('/categories/:categoryId').get(auth('getCategory'), adminController.getCategory);
 router.route('/categories/:categoryId').post(auth('updateCategory'), adminController.updateCategory);

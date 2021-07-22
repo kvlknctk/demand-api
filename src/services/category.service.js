@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const { User, Product, Category } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { domain } = require('../config/config');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 /**
  * Get category by id
@@ -56,13 +57,31 @@ const getAllCategories = async () => {
  * getCategoryTree
  * @returns {Promise<QueryResult>}
  */
+
+const getCompanyCategoriesTree = async (company) => {
+  const categories = await getCategoryTree(company);
+  return categories;
+};
+
 const getCategoryTree = async (company) => {
   const tree = await Category.aggregate([
     {
       $facet: {
-        root: [{ $match: { level: 1, company } }],
+        root: [
+          {
+            $match: {
+              $and: [
+                { level: 1 },
+                { company: ObjectId(company) },
+                /*{ year: '2017' },*/
+              ],
+            },
+          },
+        ],
+
         children: [
           { $match: { level: 2 } },
+
           {
             $graphLookup: {
               from: 'Category',
@@ -100,6 +119,7 @@ const getCategoryTree = async (company) => {
         'children.level': 1,
         'children.icon': 1,
         'children.color': 1,
+        'children.company': 1,
         'children.filters': 1,
         'children.slug': 1,
         'children.rate': 1,
@@ -124,6 +144,7 @@ const getCategoryTree = async (company) => {
         'root.name': 1,
         'root.slug': 1,
         'root.color': 1,
+        'root.company': 1,
         'root.rate': 1,
         'root.filters': 1,
         'root.icon': {
@@ -175,4 +196,5 @@ module.exports = {
   getCategoryById,
   deleteCategory,
   getCategoryTree,
+  getCompanyCategoriesTree,
 };
