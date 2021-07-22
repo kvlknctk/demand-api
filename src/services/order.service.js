@@ -56,6 +56,8 @@ const createOrder = async (allData) => {
   const order = await Order.create({
     /*user: allData.user.id,*/
     items: allData.items,
+    // its must be change for session's user.
+    company: '60f8974b69f33674268a83d9',
   });
 
   return order;
