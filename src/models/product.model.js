@@ -66,12 +66,12 @@ const productSchema = mongoose.Schema(
 productSchema.plugin(toJSON);
 productSchema.plugin(paginateRelation);
 
-productSchema.options.toJSON.transform = function (doc, ret, options) {
+/*productSchema.options.toJSON.transform = function (doc, ret, options) {
   if (doc.image) {
     ret.image = `${storage}upload/${doc.image}`;
   }
   return ret;
-};
+};*/
 
 const Product = mongoose.model('Product', productSchema);
 

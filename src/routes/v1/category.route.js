@@ -26,6 +26,7 @@ router.route('/').post(upload.single('image'), categoryController.createCategory
 router.route('/getCategoryTree').get(categoryController.getCategoryTree);
 
 router.route('/:categorySlug').post(categoryController.getCategoryWithFilters);
+router.route('/:categoryId').get(categoryController.getCategoryById);
 
 router.route('/:categoryId').delete(auth('deleteCategory'), categoryController.deleteCategory);
 

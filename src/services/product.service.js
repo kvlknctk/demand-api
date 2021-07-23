@@ -54,6 +54,10 @@ const getProductBySlug = async (slug) => {
   return Product.findOne({ slug });
 };
 
+const getProductsByCategoryId = async (categoryId) => {
+  return Product.find({ category: categoryId });
+};
+
 const updateProductById = async (productId, updateBody) => {
   const product = await getProductById(productId);
   if (!product) {
@@ -148,4 +152,5 @@ module.exports = {
   addCommentToProduct,
   getProductBySlug,
   setFeatureImage,
+  getProductsByCategoryId,
 };

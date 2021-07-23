@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { advertService, categoryService } = require('../services');
+const { productService, categoryService } = require('../services');
 
 const createCategory = catchAsync(async (req, res) => {
   const result = await categoryService.createCategory(req.body, req.file);
@@ -34,6 +34,20 @@ const getCategory = catchAsync(async (req, res) => {
   res.send({ category, adverts });
 });
 
+const getCategoryById = catchAsync(async (req, res) => {
+  let categoryId = req.params.categoryId;
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'relation']);
+
+  const category = await categoryService.getCategoryById(categoryId);
+  const products = await productService.getProductsByCategoryId(categoryId);
+  console.log({ category, products });
+
+  if (!category) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Category not found.');
+  }
+  res.send({ category, products });
+});
+
 const getCategoryWithFilters = catchAsync(async (req, res) => {
   let slug = req.params.categorySlug;
   let filters = req.body.filters;
@@ -62,6 +76,7 @@ module.exports = {
   createCategory,
   getCategories,
   getCategory,
+  getCategoryById,
   deleteCategory,
   getCategoryTree,
   getCategoryWithFilters,

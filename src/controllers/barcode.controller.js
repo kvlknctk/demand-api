@@ -32,13 +32,12 @@ const getCompanyWithBarcode = catchAsync(async (req, res) => {
   const { code } = req.params;
 
   const barcode = await barcodeService.getCompanyFromBarcode(code);
-  const categories = await categoryService.getCompanyCategoriesTree(barcode.company.id);
 
   if (!barcode) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Barcode not found');
   }
 
-  res.status(httpStatus.CREATED).send({ barcode, company: barcode.company, categories });
+  res.status(httpStatus.CREATED).send(barcode);
 });
 
 const getRequiredDataWithBarcode = catchAsync(async (req, res) => {

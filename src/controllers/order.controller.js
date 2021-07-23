@@ -64,6 +64,7 @@ const createPayment = catchAsync(async (req, res) => {
     /*user: req.user,*/
     items: req.body.items,
     sessions: req.body.sessions,
+    /* TODO:must be add company from barcode */
   });
 
   await pusher.trigger('this.props.user.id', 'orderCompleted', { order });
