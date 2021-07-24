@@ -63,12 +63,15 @@ const readedBarcode = async (code) => {
 
 const createSession = async (barcode) => {
   let sessionNumber = uuidv1();
-  return Session.create({
+  let session = await Session.create({
     barcode: barcode.id,
     sessionNumber,
     company: barcode.company,
     customerIpAddres: 'askdjdhask',
   });
+
+  await session.populate('barcode').execPopulate();
+  return session;
 };
 
 /**
@@ -82,6 +85,7 @@ const createBarcodeWithForm = async (barcodeBody) => {
 };
 
 module.exports = {
+  getBarcodeById,
   queryBarcodes,
   createBarcodeWithForm,
   deleteBarcodeById,

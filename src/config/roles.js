@@ -25,6 +25,7 @@ const allRoles = {
     'deleteEmployee',
 
     /* Barcodes Admin */
+    'getBarcode',
     'getBarcodes',
     'createBarcode',
     'deleteBarcode',

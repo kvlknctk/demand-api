@@ -12,8 +12,15 @@ const getBarcodes = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getBarcode = catchAsync(async (req, res) => {
+  let barcodeId = req.params.barcodeId;
+  const result = await barcodeService.getBarcodeById(barcodeId);
+  res.send(result);
+});
+
 const updateBarcode = catchAsync(async (req, res) => {
-  const barcode = await barcodeService.updateBarcodeById(req.params.barcodeId, req.body);
+  let barcodeId = req.params.barcodeId;
+  const barcode = await barcodeService.updateBarcodeById(barcodeId, req.body);
   res.send(barcode);
 });
 
@@ -32,12 +39,13 @@ const getCompanyWithBarcode = catchAsync(async (req, res) => {
   const { code } = req.params;
 
   const barcode = await barcodeService.getCompanyFromBarcode(code);
+  const createdSession = await barcodeService.createSession(barcode);
 
   if (!barcode) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Barcode not found');
   }
 
-  res.status(httpStatus.CREATED).send(barcode);
+  res.status(httpStatus.CREATED).send({ barcode, createdSession });
 });
 
 const getRequiredDataWithBarcode = catchAsync(async (req, res) => {
@@ -45,12 +53,13 @@ const getRequiredDataWithBarcode = catchAsync(async (req, res) => {
 
   const barcode = await barcodeService.getCompanyFromBarcode(code);
   const categories = await categoryService.getCategoryTreeWithLimitedProduct(barcode.company.id, 4);
+  const session = await barcodeService.createSession(barcode);
 
   if (!barcode) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Barcode not found');
   }
 
-  res.status(httpStatus.CREATED).send({ barcode, company: barcode.company, categories });
+  res.status(httpStatus.CREATED).send({ barcode, categories, session });
 });
 
 const createSessionFromBarcode = catchAsync(async (req, res) => {
@@ -68,6 +77,7 @@ const createSessionFromBarcode = catchAsync(async (req, res) => {
 });
 
 module.exports = {
+  getBarcode,
   getBarcodes,
   createBarcode,
   updateBarcode,

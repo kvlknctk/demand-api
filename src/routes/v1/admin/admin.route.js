@@ -51,6 +51,7 @@ router.route('/employees').post(auth('createEmployee'), employeeController.creat
 router.route('/employees/:employeeId').delete(auth('deleteEmployee'), employeeController.deleteEmployee);
 
 router.route('/barcodes').get(auth('getBarcodes'), barcodeController.getBarcodes);
+router.route('/barcodes/:barcodeId').get(auth('getBarcode'), barcodeController.getBarcode);
 router.route('/barcodes').post(auth('createBarcode'), barcodeController.createBarcode);
 router.route('/barcodes/:barcodeId').delete(auth('deleteBarcode'), barcodeController.deleteBarcode);
 
