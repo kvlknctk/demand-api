@@ -13,6 +13,7 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -20,6 +21,13 @@ if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
+
+// Custom const folder
+app.use('/upload', express.static('upload'));
+
+// Upload size limit.
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 
 // set security HTTP headers
 app.use(helmet());

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate, paginateRelation } = require('./plugins');
 
 const barcodeSchema = mongoose.Schema(
   {
@@ -12,7 +12,6 @@ const barcodeSchema = mongoose.Schema(
     company: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Company',
-      // required: true,
     },
   },
   {
@@ -23,6 +22,7 @@ const barcodeSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 barcodeSchema.plugin(toJSON);
 barcodeSchema.plugin(paginate);
+barcodeSchema.plugin(paginateRelation);
 
 /**
  * @typedef Barcode

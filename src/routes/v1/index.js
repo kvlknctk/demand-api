@@ -3,7 +3,11 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
 const barcodeRoute = require('./barcode.route');
+const adminRoute = require('./admin/admin.route');
+const categoryRoute = require('./category.route');
 const initialRoute = require('./initial.route');
+const productRoute = require('./product.route');
+const orderRoute = require('./order.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -20,6 +24,23 @@ const defaultRoutes = [
   {
     path: '/barcodes',
     route: barcodeRoute,
+  },
+  {
+    path: '/categories',
+    route: categoryRoute,
+  },
+  {
+    path: '/products',
+    route: productRoute,
+  },
+  {
+    path: '/orders',
+    route: orderRoute,
+  },
+  /* Admin */
+  {
+    path: '/admin',
+    route: adminRoute,
   },
   {
     path: '/setups',

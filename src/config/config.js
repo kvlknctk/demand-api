@@ -23,6 +23,29 @@ const envVarsSchema = Joi.object()
     SMTP_USERNAME: Joi.string().description('username for email server'),
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
+
+    // Iyzico
+    IYZICO_API_KEY: Joi.string().description('iyzico api key'),
+    IYZICO_SECRET_KEY: Joi.string().description('iyzico secret key'),
+    IYZICO_URL: Joi.string().description('iyzico url key'),
+    IYZICO_CALLBACK_URL: Joi.string().description('iyzico callback key'),
+    //IYZICO_SUBMERCHANT_KEY: Joi.string().description('iyzico sub merchant key'),
+
+    // Pusher.js
+    PUSHER_APP_ID: Joi.string().description('pusher app id'),
+    PUSHER_KEY: Joi.string().description('pusher key'),
+    PUSHER_SECRET: Joi.string().description('pusher secret'),
+    PUSHER_CLUSTER: Joi.string().description('pusher cluster'),
+
+    // Algolia Search
+    ALGOLIA_APP_ID: Joi.string().description('algolia app id'),
+    ALGOLIA_PRIVATE_KEY: Joi.string().description('algolia key'),
+
+    // SMS Provider
+    SMS_PROVIDER: Joi.string().description('sms provider name'),
+    SMS_USER: Joi.string().description('sms provider user').required(),
+    SMS_PASSWORD: Joi.string().description('sms provider password'),
+    SMS_TITLE: Joi.string().description('sms provider title'),
   })
   .unknown();
 
@@ -60,5 +83,28 @@ module.exports = {
       },
     },
     from: envVars.EMAIL_FROM,
+  },
+  iyzico: {
+    apiKey: envVars.IYZICO_API_KEY,
+    secretKey: envVars.IYZICO_SECRET_KEY,
+    url: envVars.IYZICO_URL,
+    callbackUrl: envVars.IYZICO_CALLBACK_URL,
+    //subMerchantKey: envVars.IYZICO_SUBMERCHANT_KEY,
+  },
+  pusher: {
+    appId: envVars.PUSHER_APP_ID,
+    key: envVars.PUSHER_KEY,
+    secret: envVars.PUSHER_SECRET,
+    cluster: envVars.PUSHER_CLUSTER,
+  },
+  algolia: {
+    appId: envVars.ALGOLIA_APP_ID,
+    key: envVars.ALGOLIA_PRIVATE_KEY,
+  },
+  smsService: {
+    smsProvider: envVars.SMS_PROVIDER,
+    smsUser: envVars.SMS_USER,
+    smsPassword: envVars.SMS_PASSWORD,
+    smsTitle: envVars.SMS_TITLE,
   },
 };

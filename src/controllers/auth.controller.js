@@ -47,6 +47,13 @@ const verifyEmail = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const info = catchAsync(async (req, res) => {
+  const user = req.user;
+  //const balance = await cashierService.getBalance(user.id);
+
+  res.send({ user, balance: 0 });
+});
+
 module.exports = {
   register,
   login,
@@ -56,4 +63,6 @@ module.exports = {
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
+
+  info,
 };
