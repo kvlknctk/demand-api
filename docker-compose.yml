@@ -3,15 +3,15 @@ version: '3'
 services:
   node-app:
     build: .
-    image: node-app-demand
+    image: node-app
     environment:
-      - MONGODB_URL_DOCKER=mongodb://mongodb:27017/demand-api
+      - MONGODB_URL_DOCKER=mongodb://mongodb:27017/barcode-api
     ports:
       - '3000:3000'
     depends_on:
       - mongodb
     volumes:
-      - .:/usr/src/node-app-demand
+      - .:/usr/src/node-app
     networks:
       - node-network
 
