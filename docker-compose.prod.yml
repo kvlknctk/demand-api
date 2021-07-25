@@ -2,9 +2,9 @@ version: '3'
 
 services:
   node-app:
-    container_name: node-app-prodemand
+    container_name: demand-app
     command: yarn start
     volumes:
-      - .:/usr/src/node-app
+      - .:/usr/src/demand-app
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
