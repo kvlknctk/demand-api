@@ -8,7 +8,7 @@ COPY package.json yarn.lock ./
 
 USER node
 
-ENTRYPOINT ["/bin/sh", "yarn install --pure-lockfile"]
+ENTRYPOINT ["/bin/sh", "-c", "yarn install --pure-lockfile"]
 
 COPY --chown=node:node . .
 
