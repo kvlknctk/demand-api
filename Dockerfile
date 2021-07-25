@@ -8,7 +8,7 @@ COPY package.json yarn.lock ./
 
 USER node
 
-ENTRYPOINT ["/bin/sh", "-c", "yarn start"]
+RUN yarn install --pure-lockfile
 
 COPY --chown=node:node . .
 
