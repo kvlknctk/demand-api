@@ -4,7 +4,7 @@ services:
   node-app:
     container_name: node-app-prodemand
     command: yarn start
-  volumes:
-    - .:/usr/src/node-app
-    - "/etc/timezone:/etc/timezone:ro"
-    - "/etc/localtime:/etc/localtime:ro"
+    volumes:
+      - .:/usr/src/node-app
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
