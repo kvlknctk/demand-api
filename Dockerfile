@@ -1,8 +1,8 @@
 FROM node:buster-slim
 
-RUN mkdir -p /usr/src/demand-app && chown -R node:node /usr/src/demand-app
+RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
 
-WORKDIR /usr/src/demand-app
+WORKDIR /usr/src/node-app
 
 COPY package.json yarn.lock ./
 

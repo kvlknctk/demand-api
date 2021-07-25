@@ -5,7 +5,7 @@ services:
     build: .
     links:
       - mongodb
-    image: demand-app
+    image: node-app
     environment:
       - MONGODB_URL_DOCKER=mongodb://mongodb:27017/barcode-api
     ports:
@@ -13,7 +13,7 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - .:/usr/src/demand-app
+      - .:/usr/src/node-app
     networks:
       - node-network
 
