@@ -5,6 +5,7 @@ services:
     build: .
     links:
       - mongodb
+    restart: always
     image: node-app
     environment:
       - MONGODB_URL_DOCKER=mongodb://mongodb:27017/barcode-api
@@ -19,6 +20,7 @@ services:
 
   mongodb:
     image: mongo:4.2.1-bionic
+    restart: always
     ports:
       - '27017:27017'
     volumes:
