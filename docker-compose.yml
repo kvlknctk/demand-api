@@ -3,28 +3,14 @@ version: '3'
 services:
   node-app:
     build: .
-    links:
-      - mongodb
+    restart: always
     image: node-app
     environment:
       - MONGODB_URL_DOCKER=mongodb://mongodb:27017/barcode-api
     ports:
       - '3000:3000'
-    depends_on:
-      - mongodb
     volumes:
       - .:/usr/src/node-app
-    networks:
-      - node-network
-
-  mongodb:
-    image: mongo:4.2.1-bionic
-    ports:
-      - '27017:27017'
-    volumes:
-      - dbdata:/data/db
-      - ./setup:/setup
-      - ./setup/mongod.conf:/etc/mongod.conf
     networks:
       - node-network
 
