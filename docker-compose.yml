@@ -29,7 +29,7 @@ services:
       - ./setup/mongod.conf:/etc/mongod.conf
     networks:
       - node-network
-    entrypoint: [ "mongod", "--config /etc/mongod.conf",  "--configExpand 'rest,exec'" ]
+    entrypoint: [ "mongod", "--config", "/etc/mongod.conf", "--configExpand", "rest,exec" ]
 
 volumes:
   dbdata:
