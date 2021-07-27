@@ -27,6 +27,7 @@ const createOrder = catchAsync(async (req, res) => {
   const order = await orderService.createOrder({
     items: req.body.items,
     sessions: req.body.sessions,
+    lastReadedBarcodeOfCompany: req.body.lastReadedBarcodeOfCompany,
   });
 
   await pusher.trigger('this.props.user.id', 'orderCompleted', { order });
