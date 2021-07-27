@@ -30,7 +30,7 @@ const createOrder = catchAsync(async (req, res) => {
     lastReadedBarcodeOfCompany: req.body.lastReadedBarcodeOfCompany,
   });
 
-  await pusher.trigger('this.props.user.id', 'orderCompleted', { order });
+  await pusher.trigger(req.body.lastReadedBarcodeOfCompany, 'orderCompleted', { order });
 
   res.status(httpStatus.CREATED).send({ order });
 });
