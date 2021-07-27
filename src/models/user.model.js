@@ -44,12 +44,6 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    founders: [
-      {
-        type: mongoose.Schema.Types.Mixed,
-        ref: 'Company',
-      },
-    ],
   },
   {
     timestamps: true,
