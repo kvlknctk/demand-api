@@ -28,7 +28,7 @@ services:
       - ./setup/mongod.conf:/etc/mongod.conf
     networks:
       - node-network
-    entrypoint: [ "mongod", "--auth", "--port", "27017", "--dbpath", "/data/db", "--config", "/etc/mongod.conf", "--bind_ip", "0.0.0.0" ]
+    entrypoint: [ "mongod", "--auth", "--port", "27017", "--dbpath", "/data/db",  "--bind_ip", "0.0.0.0", "-f", "/etc/mongod.conf" ]
 
 volumes:
   dbdata:
