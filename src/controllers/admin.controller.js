@@ -106,6 +106,15 @@ const getUser = catchAsync(async (req, res) => {
   res.send({ user, orders, adverts, boughts, otps, provider });
 });
 
+const getProductDetail = catchAsync(async (req, res) => {
+  let productId = req.params.productId;
+
+  const product = await productService.getProductById(productId);
+  console.log({ product });
+
+  res.send({ product });
+});
+
 const getProducts = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['title', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
@@ -208,6 +217,13 @@ const deleteCampaign = catchAsync(async (req, res) => {
   const campaign = await campaignService.deleteCampaign(req.params.campaignId);
   res.status(httpStatus.OK).send('ok');
 });
+
+const getBarcodeCategory = catchAsync(async (req, res) => {
+  /*const category = await adminService.getCategoryById(req.params.categoryId);*/
+
+  res.send({ category: 'asd' });
+});
+
 const installCities = catchAsync(async (req, res) => {
   const campaign = await locationService.installCities();
   res.status(httpStatus.OK).send('ok');
@@ -221,8 +237,10 @@ module.exports = {
   uploadAdvertImage,
   getUsers,
   getUser,
-  getProducts,
   createProduct,
+
+  getProductDetail,
+  getProducts,
 
   getOrders,
   approveOrder,
@@ -244,6 +262,9 @@ module.exports = {
   listCampaign,
   createCampaign,
   deleteCampaign,
+
+  // Barcodes
+  getBarcodeCategory,
 
   // Tools Services
   installCities,
