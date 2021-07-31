@@ -76,6 +76,20 @@ const createSessionFromBarcode = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(session);
 });
 
+const requestWaiterFromBarcode = catchAsync(async (req, res) => {
+  const { code } = req.params;
+
+  const companyBarcode = await barcodeService.getCompanyFromBarcode(code);
+  if (!companyBarcode) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Barcode not found');
+  }
+
+  // Create new session
+  const session = await barcodeService.requestWaiter(companyBarcode);
+
+  res.status(httpStatus.CREATED).send(session);
+});
+
 module.exports = {
   getBarcode,
   getBarcodes,
@@ -85,4 +99,5 @@ module.exports = {
   getCompanyWithBarcode,
   getRequiredDataWithBarcode,
   createSessionFromBarcode,
+  requestWaiterFromBarcode,
 };
