@@ -69,8 +69,13 @@ const createProduct = catchAsync(async (req, res) => {
   try {
     const files = req.files;
 
-    // Create product with image file name.
-    const cretedProduct = await productService.createProduct({ ...req.body, image: files[0].filename });
+    let cretedProduct;
+    if (files[0]) {
+      // Create product with image file name.
+      cretedProduct = await productService.createProduct({ ...req.body, image: files[0].middle.key });
+    } else {
+      cretedProduct = await productService.createProduct({ ...req.body });
+    }
 
     // We need to create thumbnail image for fast views.
     /*await sharp(files[0].path)
@@ -119,7 +124,6 @@ const updateProductDetail = catchAsync(async (req, res) => {
 
   const files = req.files;
   console.log('fie', files);
-  console.log({ or: files[0].thumb.key });
 
   let product;
   if (files[0]) {

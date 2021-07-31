@@ -89,7 +89,7 @@ router.route('/categories/:categoryId').post(auth('updateCategory'), adminContro
 router.route('/:companyId/orders').get(auth('getOrders'), adminController.getOrders);
 
 router.route('/products').get(auth('getProducts'), adminController.getProducts);
-/*router.route('/products').post(auth('createProduct'), productImage.any(), adminController.createProduct);*/
+router.route('/products').post(auth('createProduct'), productImage.any(), adminController.createProduct);
 router.route('/products/:productId').get(auth('getProductDetail'), adminController.getProductDetail);
 router.route('/products/:productId').put(auth('putProductDetail'), productImage.any(), adminController.updateProductDetail);
 router.route('/products/:productId').delete(auth('deleteProduct'), productController.deleteProduct);
