@@ -58,8 +58,9 @@ const productImage = multer({
 
 const storage = s3Storage({
   Key: (req, file, cb) => {
+    console.log('user', req.user);
     crypto.pseudoRandomBytes(16, (err, raw) => {
-      cb(err, err ? undefined : raw.toString('hex')+'/asd');
+      cb(err, err ? undefined : 'products/' + raw.toString('hex'));
     });
   },
   s3,
