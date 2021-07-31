@@ -59,13 +59,13 @@ const productImage = multer({
 const storage = s3Storage({
   Key: (req, file, cb) => {
     crypto.pseudoRandomBytes(16, (err, raw) => {
-      cb(err, err ? undefined : raw.toString('hex'));
+      cb(err, err ? undefined : raw.toString('hex')+'/asd');
     });
   },
   s3,
   Bucket: 'demand-api',
   multiple: true,
-  resize: [{ suffix: 'sm', width: 300, height: 300 }, { suffix: 'original' }],
+  resize: [{ suffix: 'sm', width: 400, height: 300 }, { suffix: 'original' }],
 });
 
 /*const categoryImage = multer({ storage: categoryStorage });*/
