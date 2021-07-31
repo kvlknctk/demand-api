@@ -48,8 +48,8 @@ const envVarsSchema = Joi.object()
     SMS_TITLE: Joi.string().description('sms provider title'),
 
     // AWS
-    AWS_KEY_ID: Joi.string().description('AWS_KEY_ID required'),
-    AWS_SECRET_KEY_ID: Joi.string().description('AWS_SECRET_KEY_ID required'),
+    AWS_ACCESS_KEY_ID: Joi.string().description('AWS_KEY_ID required'),
+    AWS_SECRET_ACCESS_KEY: Joi.string().description('AWS_SECRET_KEY_ID required'),
   })
   .unknown();
 
@@ -112,7 +112,7 @@ module.exports = {
     smsTitle: envVars.SMS_TITLE,
   },
   aws: {
-    keyId: envVars.AWS_KEY_ID,
-    secretKeyId: envVars.AWS_SECRET_KEY_ID,
+    keyId: envVars.AWS_ACCESS_KEY_ID,
+    secretKeyId: envVars.AWS_SECRET_ACCESS_KEY,
   },
 };
