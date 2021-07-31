@@ -118,7 +118,8 @@ const updateProductDetail = catchAsync(async (req, res) => {
   let productId = req.params.productId;
 
   const files = req.files;
-  console.log({ or: files[0].original, xs: files[0].xs });
+  console.log('fie', files);
+  console.log({ or: files[0].thumb.key });
 
   let product;
   if (files[0]) {
@@ -130,7 +131,7 @@ const updateProductDetail = catchAsync(async (req, res) => {
     product = await productService.updateProductById(productId, {
       ...req.body,
       category: req.body.category,
-      image: files[0].filename,
+      image: files[0].middle.key,
     });
   } else {
     product = await productService.updateProductById(productId, { ...req.body, category: req.body.category });

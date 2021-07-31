@@ -66,7 +66,10 @@ const storage = s3Storage({
   s3,
   Bucket: 'demand-api',
   multiple: true,
-  resize: [{ suffix: 'sm', width: 400, height: 300 }, { suffix: 'original' }],
+  resize: [
+    { suffix: 'thumb', width: 480, height: 300 },
+    { suffix: 'middle', width: 640, height: 480 },
+  ],
 });
 
 /*const categoryImage = multer({ storage: categoryStorage });*/
