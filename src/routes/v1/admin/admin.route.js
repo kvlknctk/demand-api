@@ -16,7 +16,6 @@ const s3 = new aws.S3();
 aws.config.update({
   secretAccessKey: 'AKIA47MDUBQ3ZKO7KW47',
   accessKeyId: 'OhERmi+NFFWM0fVjkrFKrTfjsXbxvnd9ooNMROB4',
-  region: 'eu-central-1',
 });
 
 const productStorage = multer.diskStorage({
