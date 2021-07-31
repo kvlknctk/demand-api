@@ -32,6 +32,10 @@ const allRoles = {
     'createBarcode',
     'deleteBarcode',
     'getBarcodeCategory',
+
+    /* Settings */
+    'saveSettings',
+    'getSettings',
   ],
 };
 

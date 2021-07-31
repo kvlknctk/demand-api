@@ -11,3 +11,4 @@ module.exports.orderService = require('./order.service');
 module.exports.adminService = require('./admin.service');
 module.exports.categoryService = require('./category.service');
 module.exports.employeeService = require('./employee.service');
+module.exports.companyService = require('./company.service');

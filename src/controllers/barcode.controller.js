@@ -8,7 +8,7 @@ const { User } = require('../models');
 const getBarcodes = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'relation']);
-  const result = await barcodeService.queryBarcodes(filter, options);
+  const result = await barcodeService.queryBarcodes({ ...filter, company: req.user.company }, options);
   res.send(result);
 });
 
@@ -30,8 +30,8 @@ const deleteBarcode = catchAsync(async (req, res) => {
 });
 
 const createBarcode = catchAsync(async (req, res) => {
-  console.log(req.headers.header1);
-  const product = await barcodeService.createBarcodeWithForm(req.body);
+  console.log('user', req.user);
+  const product = await barcodeService.createBarcodeWithForm({ ...req.body, company: req.user.company });
   res.status(httpStatus.CREATED).send(product);
 });
 

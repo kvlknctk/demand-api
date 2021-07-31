@@ -107,6 +107,9 @@ router.route('/barcodes').post(auth('createBarcode'), barcodeController.createBa
 router.route('/orders').get(auth('getOrders'), adminController.getOrders);
 router.route('/orders/:orderId/approve').get(auth('approveOrder'), adminController.approveOrder);
 
+router.route('/settings').get(auth('getSettings'), adminController.getSettings);
+router.route('/settings').post(auth('saveSettings'), adminController.saveSettings);
+
 /*
 
 router.route('/users').get(auth('getUsers'), adminController.getUsers);

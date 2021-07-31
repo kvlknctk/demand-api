@@ -3,7 +3,7 @@ const pick = require('../utils/pick');
 /*const { lazySumOrder } = require('../utils/lazySum');*/
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { adminService, userService, productService, orderService, categoryService } = require('../services');
+const { adminService, userService, productService, orderService, categoryService, companyService } = require('../services');
 const auth = require('../middlewares/auth');
 const fs = require('file-system');
 /*const sharp = require('sharp');*/
@@ -72,9 +72,13 @@ const createProduct = catchAsync(async (req, res) => {
     let cretedProduct;
     if (files[0]) {
       // Create product with image file name.
-      cretedProduct = await productService.createProduct({ ...req.body, image: files[0].middle.key });
+      cretedProduct = await productService.createProduct({
+        ...req.body,
+        image: files[0].middle.key,
+        company: req.user.company,
+      });
     } else {
-      cretedProduct = await productService.createProduct({ ...req.body });
+      cretedProduct = await productService.createProduct({ ...req.body, company: req.user.company });
     }
 
     // We need to create thumbnail image for fast views.
@@ -167,7 +171,7 @@ const updateProductDetail = catchAsync(async (req, res) => {
 const getProducts = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['title', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await productService.queryProducts(filter, options);
+  const result = await productService.queryProducts({ ...filter, company: req.user.company }, options);
   res.send(result);
 });
 
@@ -243,34 +247,26 @@ const createPage = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(page);
 });
 
-/*
-const install = catchAsync(async (req, res) => {
-  const page = await adminService.installService();
-  res.status(httpStatus.CREATED).send({ page: 'asd' });
-});
-*/
-
-const listCampaign = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['title', 'role']);
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await campaignService.listCampaign(filter, options);
-  res.send(result);
-});
-
-const createCampaign = catchAsync(async (req, res) => {
-  const page = await campaignService.createCampaign(req.body);
-  res.status(httpStatus.CREATED).send(page);
-});
-
-const deleteCampaign = catchAsync(async (req, res) => {
-  const campaign = await campaignService.deleteCampaign(req.params.campaignId);
-  res.status(httpStatus.OK).send('ok');
-});
-
 const getBarcodeCategory = catchAsync(async (req, res) => {
   /*const category = await adminService.getCategoryById(req.params.categoryId);*/
 
   res.send({ category: 'asd' });
+});
+
+const saveSettings = catchAsync(async (req, res) => {
+  let companyId = req.user.company;
+
+  const updated = await companyService.saveCompanySettings(companyId, req.body);
+
+  res.send({ company: updated });
+});
+
+const getSettings = catchAsync(async (req, res) => {
+  let companyId = req.user.company;
+
+  const company = await companyService.getCompanyById(companyId);
+
+  res.send({ company });
 });
 
 const installCities = catchAsync(async (req, res) => {
@@ -308,13 +304,12 @@ module.exports = {
   createPage,
   deletePage,
 
-  // Campaign
-  listCampaign,
-  createCampaign,
-  deleteCampaign,
-
   // Barcodes
   getBarcodeCategory,
+
+  // Settings
+  saveSettings,
+  getSettings,
 
   // Tools Services
   installCities,
