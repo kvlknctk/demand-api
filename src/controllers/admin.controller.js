@@ -6,7 +6,9 @@ const catchAsync = require('../utils/catchAsync');
 const { adminService, userService, productService, orderService, categoryService } = require('../services');
 const auth = require('../middlewares/auth');
 const fs = require('file-system');
-const sharp = require('sharp');
+/*const sharp = require('sharp');*/
+const s3Storage = require('multer-sharp-s3');
+
 const path = require('path');
 const { Order, User, Bought } = require('./../models');
 
@@ -48,19 +50,17 @@ const uploadAdvertImage = catchAsync(async (req, res) => {
     } else {
       for (let po in photos) {
         // Generate Big Image
-        await sharp(photos[po].path)
+        /*await sharp(photos[po].path)
           .resize({ width: 640, height: 480 })
           .jpeg({ quality: 70 })
-          .toFile(`${photos[po].destination}/resized/${photos[po].filename}`);
-
-        await advertService.addImage(req.params.advertId, photos[po].filename);
+          .toFile(`${photos[po].destination}/resized/${photos[po].filename}`);*/
+        /*await advertService.addImage(req.params.advertId, photos[po].filename);*/
       }
 
       // send response
       res.send({ product: 'OK' });
     }
   } catch (err) {
-    console.log({ err });
     res.status(500).send(err);
   }
 });
@@ -73,10 +73,10 @@ const createProduct = catchAsync(async (req, res) => {
     const cretedProduct = await productService.createProduct({ ...req.body, image: files[0].filename });
 
     // We need to create thumbnail image for fast views.
-    await sharp(files[0].path)
+    /*await sharp(files[0].path)
       .resize({ width: 640, height: 480 })
       .jpeg({ quality: 95 })
-      .toFile(`${files[0].destination}/resized/${files[0].filename}`);
+      .toFile(`${files[0].destination}/resized/${files[0].filename}`);*/
 
     // Return a The created product
     res.send({ product: cretedProduct });
@@ -110,7 +110,51 @@ const getProductDetail = catchAsync(async (req, res) => {
   let productId = req.params.productId;
 
   const product = await productService.getProductById(productId);
-  console.log({ product });
+
+  res.send({ product });
+});
+
+const updateProductDetail = catchAsync(async (req, res) => {
+  let productId = req.params.productId;
+
+  const files = req.files;
+  console.log({ or: files[0].original, xs: files[0].xs });
+
+  let product;
+  if (files[0]) {
+    /*  await sharp(files[0].path)
+      .resize({ width: 640, height: 480 })
+      .jpeg({ quality: 95 })
+      .toFile(`${files[0].destination}/resized/${files[0].filename}`);*/
+
+    product = await productService.updateProductById(productId, {
+      ...req.body,
+      category: req.body.category,
+      image: files[0].filename,
+    });
+  } else {
+    product = await productService.updateProductById(productId, { ...req.body, category: req.body.category });
+  }
+
+  console.log('prod', product);
+  /*
+  try {
+
+    // Create product with image file name.
+    const cretedProduct = await productService.createProduct({ ...req.body, image: files[0].filename });
+
+    // We need to create thumbnail image for fast views.
+    await sharp(files[0].path)
+      .resize({ width: 640, height: 480 })
+      .jpeg({ quality: 95 })
+      .toFile(`${files[0].destination}/resized/${files[0].filename}`);
+
+    // Return a The created product
+    res.send({ product: cretedProduct });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+*/
 
   res.send({ product });
 });
@@ -239,6 +283,7 @@ module.exports = {
   getUser,
   createProduct,
 
+  updateProductDetail,
   getProductDetail,
   getProducts,
 

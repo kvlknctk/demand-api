@@ -19,6 +19,7 @@ const allRoles = {
     'createProduct',
     'deleteProduct',
     'getProductDetail',
+    'putProductDetail',
 
     /* Employee Admin */
     'getEmployees',

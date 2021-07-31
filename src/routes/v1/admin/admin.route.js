@@ -4,8 +4,21 @@ const authSoft = require('../../../middlewares/authSoft');
 const validate = require('../../../middlewares/validate');
 const { adminController, productController, employeeController, barcodeController } = require('../../../controllers');
 const multer = require('multer');
+const aws = require('aws-sdk');
+const crypto = require('crypto');
+/*const multerS3 = require('multer-s3');*/
+const s3Storage = require('multer-sharp-s3');
 
 // upload image
+
+const s3 = new aws.S3();
+
+aws.config.update({
+  secretAccessKey: 'AKIA47MDUBQ3ZKO7KW47',
+  accessKeyId: 'OhERmi+NFFWM0fVjkrFKrTfjsXbxvnd9ooNMROB4',
+  region: 'eu-central-1',
+});
+
 const productStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'upload/products/');
@@ -26,8 +39,37 @@ const categoryStorage = multer.diskStorage({
   },
 });
 
-const productImage = multer({ storage: productStorage });
-const categoryImage = multer({ storage: categoryStorage });
+/*
+const productImage = multer({
+  fileFilter,
+  storage: multerS3({
+    acl: 'public-read',
+    s3,
+    bucket: 'demand-api',
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+      cb(null, uniqueSuffix + '.png');
+    },
+  }),
+});*/
+
+const storage = s3Storage({
+  Key: (req, file, cb) => {
+    crypto.pseudoRandomBytes(16, (err, raw) => {
+      cb(err, err ? undefined : raw.toString('hex'));
+    });
+  },
+  s3,
+  Bucket: 'demand-api',
+  multiple: true,
+  resize: [{ suffix: 'sm', width: 300, height: 300 }, { suffix: 'original' }],
+});
+
+/*const categoryImage = multer({ storage: categoryStorage });*/
+const productImage = multer({ storage });
 
 const router = express.Router();
 // router.route('/dashboard').get(auth('getDashboard'), adminController.getDashboard);
@@ -35,7 +77,7 @@ const router = express.Router();
 router.route('/dashboard').get(auth('getDashboard'), adminController.dashboard);
 
 router.route('/categories').get(auth('getCategories'), adminController.getCategories);
-router.route('/categories').post(auth('createCategory'), categoryImage.any(), adminController.createCategory);
+router.route('/categories').post(auth('createCategory') /*categoryImage.any()*/, adminController.createCategory);
 router.route('/categories/:categoryId').delete(auth('createCategory'), adminController.deleteCategory);
 router.route('/categories/:categoryId').get(auth('getCategory'), adminController.getCategory);
 router.route('/categories/:categoryId').post(auth('updateCategory'), adminController.updateCategory);
@@ -43,8 +85,9 @@ router.route('/categories/:categoryId').post(auth('updateCategory'), adminContro
 router.route('/:companyId/orders').get(auth('getOrders'), adminController.getOrders);
 
 router.route('/products').get(auth('getProducts'), adminController.getProducts);
-router.route('/products').post(auth('createProduct'), productImage.any(), adminController.createProduct);
+/*router.route('/products').post(auth('createProduct'), productImage.any(), adminController.createProduct);*/
 router.route('/products/:productId').get(auth('getProductDetail'), adminController.getProductDetail);
+router.route('/products/:productId').put(auth('putProductDetail'), productImage.any(), adminController.updateProductDetail);
 router.route('/products/:productId').delete(auth('deleteProduct'), productController.deleteProduct);
 
 router.route('/employees').get(auth('getEmployees'), employeeController.getEmployees);
