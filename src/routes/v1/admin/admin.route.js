@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('../../../middlewares/auth');
+const config = require('../../../config/config');
 const authSoft = require('../../../middlewares/authSoft');
 const validate = require('../../../middlewares/validate');
 const { adminController, productController, employeeController, barcodeController } = require('../../../controllers');
@@ -14,8 +15,8 @@ const s3Storage = require('multer-sharp-s3');
 const s3 = new aws.S3();
 
 aws.config.update({
-  secretAccessKey: 'AKIA47MDUBQ3ZKO7KW47',
-  accessKeyId: 'OhERmi+NFFWM0fVjkrFKrTfjsXbxvnd9ooNMROB4',
+  secretAccessKey: config.aws.secretKeyId,
+  accessKeyId: config.aws.accessKeyId,
 });
 
 const productStorage = multer.diskStorage({
