@@ -2,6 +2,16 @@ const httpStatus = require('http-status');
 const { User, Barcode, Session } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { v1: uuidv1 } = require('uuid');
+const Pusher = require('pusher');
+const config = require('../config/config');
+
+const pusher = new Pusher({
+  appId: config.pusher.appId,
+  key: config.pusher.key,
+  secret: config.pusher.secret,
+  cluster: config.pusher.cluster,
+  useTLS: true,
+});
 
 /**
  * Query for barcodes
@@ -61,17 +71,34 @@ const readedBarcode = async (code) => {
   return code;
 };
 
-const createSession = async (barcode) => {
+const createSession = async (company) => {
   let sessionNumber = uuidv1();
   let session = await Session.create({
-    barcode: barcode.id,
+    barcode: company.id,
     sessionNumber,
-    company: barcode.company,
+    company: company.company,
     customerIpAddres: 'askdjdhask',
   });
 
   await session.populate('barcode').execPopulate();
   return session;
+};
+
+const requestWaiter = async (companyBarcode) => {
+  let sessionNumber = uuidv1();
+
+  await pusher.trigger(companyBarcode.company.id, 'requestWaiterChannel', { companyBarcode });
+
+  /* let session = await Session.create({
+    barcode: company.id,
+    sessionNumber,
+    company: company.company,
+    customerIpAddres: 'askdjdhask',
+  });
+
+  await session.populate('barcode').execPopulate();*/
+
+  return sessionNumber;
 };
 
 /**
@@ -93,4 +120,5 @@ module.exports = {
   createSession,
   getCompanyFromBarcode,
   readedBarcode,
+  requestWaiter,
 };
