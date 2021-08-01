@@ -5,7 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const { productService, categoryService, pageService } = require('../services');
 const { Product } = require('../models');
 const fs = require('file-system');
-const sharp = require('sharp');
+/*const sharp = require('sharp');*/
 const path = require('path');
 
 const initialContent = catchAsync(async (req, res) => {
@@ -112,7 +112,7 @@ const uploadImage = catchAsync(async (req, res) => {
     } else {
       for (let po in photos) {
         // Generate Big Image
-        await sharp(photos[po].path)
+        /* await sharp(photos[po].path)
           .resize({ width: 260, height: 345 })
           .jpeg({ quality: 80 })
           .toFile(`${photos[po].destination}/aresized/${photos[po].filename}`);
@@ -121,7 +121,7 @@ const uploadImage = catchAsync(async (req, res) => {
         await sharp(photos[po].path)
           .resize({ width: 70, height: 100 })
           .jpeg({ quality: 80 })
-          .toFile(`${photos[po].destination}/athumb/${photos[po].filename}`);
+          .toFile(`${photos[po].destination}/athumb/${photos[po].filename}`);*/
 
         await productService.addImage(req.params.productId, photos[po].filename);
       }

@@ -18,6 +18,8 @@ const allRoles = {
     'getProducts',
     'createProduct',
     'deleteProduct',
+    'getProductDetail',
+    'putProductDetail',
 
     /* Employee Admin */
     'getEmployees',
@@ -29,6 +31,11 @@ const allRoles = {
     'getBarcodes',
     'createBarcode',
     'deleteBarcode',
+    'getBarcodeCategory',
+
+    /* Settings */
+    'saveSettings',
+    'getSettings',
   ],
 };
 
