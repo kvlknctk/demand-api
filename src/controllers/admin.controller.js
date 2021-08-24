@@ -19,7 +19,7 @@ const dashboard = catchAsync(async (req, res) => {
   res.send({ orders });
 });
 
-const getAdverts = catchAsync(async (req, res) => {
+/*const getAdverts = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'relation']);
   const result = await advertService.queryAdvertsForAdmin({ ...filter }, options);
@@ -36,8 +36,9 @@ const updateAdvert = catchAsync(async (req, res) => {
   const selectedFields = pick(req.body.editedAdvert, ['slug', 'acoin', 'approved', 'title', 'body', 'priceMin', 'priceMax']);
   const result = await adminService.updateAdvertById(req.params.advertId, selectedFields);
   res.send(result);
-});
+});*/
 
+/*
 const uploadAdvertImage = catchAsync(async (req, res) => {
   try {
     const photos = req.files;
@@ -50,11 +51,11 @@ const uploadAdvertImage = catchAsync(async (req, res) => {
     } else {
       for (let po in photos) {
         // Generate Big Image
-        /*await sharp(photos[po].path)
+        /!*await sharp(photos[po].path)
           .resize({ width: 640, height: 480 })
           .jpeg({ quality: 70 })
-          .toFile(`${photos[po].destination}/resized/${photos[po].filename}`);*/
-        /*await advertService.addImage(req.params.advertId, photos[po].filename);*/
+          .toFile(`${photos[po].destination}/resized/${photos[po].filename}`);*!/
+        /!*await advertService.addImage(req.params.advertId, photos[po].filename);*!/
       }
 
       // send response
@@ -64,6 +65,7 @@ const uploadAdvertImage = catchAsync(async (req, res) => {
     res.status(500).send(err);
   }
 });
+*/
 
 const createProduct = catchAsync(async (req, res) => {
   try {
@@ -104,15 +106,11 @@ const getUsers = catchAsync(async (req, res) => {
 const getUser = catchAsync(async (req, res) => {
   const user = await userService.getUserById(req.params.userId);
   const orders = await orderService.getOrdersByUserId(req.params.userId);
-  const adverts = await advertService.getAdvertsByUserId(req.params.userId);
-  const boughts = await boughtService.getUserBoughtsByUserId(req.params.userId);
-  const otps = await otpService.getOtpByUser(req.params.userId);
-  const provider = await providerService.getProviderByUserId(req.params.userId);
 
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  res.send({ user, orders, adverts, boughts, otps, provider });
+  res.send({ user, orders });
 });
 
 const getProductDetail = catchAsync(async (req, res) => {
@@ -144,26 +142,6 @@ const updateProductDetail = catchAsync(async (req, res) => {
   } else {
     product = await productService.updateProductById(productId, { ...req.body, category: req.body.category });
   }
-
-  console.log('prod', product);
-  /*
-  try {
-
-    // Create product with image file name.
-    const cretedProduct = await productService.createProduct({ ...req.body, image: files[0].filename });
-
-    // We need to create thumbnail image for fast views.
-    await sharp(files[0].path)
-      .resize({ width: 640, height: 480 })
-      .jpeg({ quality: 95 })
-      .toFile(`${files[0].destination}/resized/${files[0].filename}`);
-
-    // Return a The created product
-    res.send({ product: cretedProduct });
-  } catch (err) {
-    res.status(500).send(err);
-  }
-*/
 
   res.send({ product });
 });
@@ -230,25 +208,8 @@ const updateCategory = catchAsync(async (req, res) => {
   res.send({ category });
 });
 
-const getPages = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['title', 'role']);
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await pageService.queryPages(filter, options);
-  res.send(result);
-});
-
-const deletePage = catchAsync(async (req, res) => {
-  const page = await pageService.deletePage(req.params.pageId);
-  res.status(httpStatus.OK).send('ok');
-});
-
-const createPage = catchAsync(async (req, res) => {
-  const page = await campaignService.createCampaign(req.body);
-  res.status(httpStatus.CREATED).send(page);
-});
-
 const getBarcodeCategory = catchAsync(async (req, res) => {
-  /*const category = await adminService.getCategoryById(req.params.categoryId);*/
+  /* const category = await adminService.getCategoryById(req.params.categoryId); */
 
   res.send({ category: 'asd' });
 });
@@ -269,17 +230,12 @@ const getSettings = catchAsync(async (req, res) => {
   res.send({ company });
 });
 
-const installCities = catchAsync(async (req, res) => {
-  const campaign = await locationService.installCities();
-  res.status(httpStatus.OK).send('ok');
-});
-
 module.exports = {
   dashboard,
-  getAdverts,
+  /*getAdverts,
   getAdvert,
   updateAdvert,
-  uploadAdvertImage,
+  uploadAdvertImage,*/
   getUsers,
   getUser,
   createProduct,
@@ -290,9 +246,6 @@ module.exports = {
 
   getOrders,
   approveOrder,
-
-  // PAGE
-  getPages,
 
   // Categorie
   getCategory,
@@ -310,7 +263,4 @@ module.exports = {
   // Settings
   saveSettings,
   getSettings,
-
-  // Tools Services
-  installCities,
 };
