@@ -254,9 +254,6 @@ module.exports = {
   deleteCategory,
   updateCategory,
 
-  createPage,
-  deletePage,
-
   // Barcodes
   getBarcodeCategory,
 
