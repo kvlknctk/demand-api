@@ -19,7 +19,7 @@ aws.config.update({
   accessKeyId: config.aws.accessKeyId,
 });
 
-const productStorage = multer.diskStorage({
+const productStorageLocal = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'upload/products/');
   },
@@ -39,24 +39,7 @@ const categoryStorage = multer.diskStorage({
   },
 });
 
-/*
-const productImage = multer({
-  fileFilter,
-  storage: multerS3({
-    acl: 'public-read',
-    s3,
-    bucket: 'demand-api',
-    metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      cb(null, uniqueSuffix + '.png');
-    },
-  }),
-});*/
-
-const storage = s3Storage({
+const productStorage = s3Storage({
   Key: (req, file, cb) => {
     console.log('user', req.user);
     crypto.pseudoRandomBytes(16, (err, raw) => {
@@ -72,11 +55,22 @@ const storage = s3Storage({
   ],
 });
 
-/*const categoryImage = multer({ storage: categoryStorage });*/
-const productImage = multer({ storage });
+const storageSettings = s3Storage({
+  Key: (req, file, cb) => {
+    crypto.pseudoRandomBytes(16, (err, raw) => {
+      cb(err, err ? undefined : 'settings/' + raw.toString('hex'));
+    });
+  },
+  s3,
+  Bucket: 'demand-api',
+  multiple: true,
+  resize: [{ suffix: 'thumb', width: 640, height: 480 }],
+});
+
+const productImage = multer({ storage: productStorage });
+const settingsImage = multer({ storage: storageSettings });
 
 const router = express.Router();
-// router.route('/dashboard').get(auth('getDashboard'), adminController.getDashboard);
 
 router.route('/dashboard').get(auth('getDashboard'), adminController.dashboard);
 
@@ -109,6 +103,7 @@ router.route('/orders/:orderId/approve').get(auth('approveOrder'), adminControll
 
 router.route('/settings').get(auth('getSettings'), adminController.getSettings);
 router.route('/settings').post(auth('saveSettings'), adminController.saveSettings);
+router.route('/settings/saveMasterImage').post(auth('saveSettings'), settingsImage.any(), adminController.saveMasterImage);
 
 /*
 

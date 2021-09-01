@@ -24,7 +24,19 @@ const saveCompanySettings = async (companyId, newSettings) => {
   return company;
 };
 
+const saveMasterImageWithCompanyId = async (companyId, image) => {
+  const company = await getCompanyById(companyId);
+  if (!company) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Company not found');
+  }
+
+  Object.assign(company, { image });
+  await company.save();
+  return company;
+};
+
 module.exports = {
   saveCompanySettings,
+  saveMasterImageWithCompanyId,
   getCompanyById,
 };

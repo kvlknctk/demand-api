@@ -231,6 +231,32 @@ const saveSettings = catchAsync(async (req, res) => {
   res.send({ company: updated });
 });
 
+const saveMasterImage = catchAsync(async (req, res) => {
+  console.log('req', req);
+  console.log('req2', req.body.image);
+  let user = req.user;
+  let companyId = req.user.company;
+
+  console.log({ user });
+  const files = req.files;
+
+  console.log({ files });
+  let product;
+  if (files[0]) {
+    console.log('if');
+    /*  await sharp(files[0].path)
+      .resize({ width: 640, height: 480 })
+      .jpeg({ quality: 95 })
+      .toFile(`${files[0].destination}/resized/${files[0].filename}`);*/
+    product = await companyService.saveMasterImageWithCompanyId(companyId, {
+      image: files[0].thumb.key,
+    });
+  } else {
+    //product = await productService.updateProductById(productId, { ...req.body, category: req.body.category });
+  }
+  res.send({ company: product });
+});
+
 const getSettings = catchAsync(async (req, res) => {
   let companyId = req.user.company;
 
@@ -269,4 +295,5 @@ module.exports = {
   // Settings
   saveSettings,
   getSettings,
+  saveMasterImage,
 };

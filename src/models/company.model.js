@@ -18,6 +18,9 @@ const companySchema = mongoose.Schema(
     settings: {
       type: Object,
     },
+    image: {
+      type: String,
+    },
   },
   {
     timestamps: true,
