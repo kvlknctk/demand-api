@@ -1,6 +1,5 @@
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
-/*const { lazySumOrder } = require('../utils/lazySum');*/
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const {
@@ -12,13 +11,11 @@ const {
   categoryService,
   companyService,
 } = require('../services');
+const { Order, User, Bought } = require('./../models');
 const auth = require('../middlewares/auth');
-const fs = require('file-system');
-/*const sharp = require('sharp');*/
 const s3Storage = require('multer-sharp-s3');
 
 const path = require('path');
-const { Order, User, Bought } = require('./../models');
 
 const dashboard = catchAsync(async (req, res) => {
   const orders = await Order.find({}).sort([['createdAt', -1]]);
@@ -232,18 +229,12 @@ const saveSettings = catchAsync(async (req, res) => {
 });
 
 const saveMasterImage = catchAsync(async (req, res) => {
-  console.log('req', req);
-  console.log('req2', req.body.image);
-  let user = req.user;
   let companyId = req.user.company;
-
-  console.log({ user });
   const files = req.files;
 
-  console.log({ files });
   let product;
+
   if (files[0]) {
-    console.log('if');
     /*  await sharp(files[0].path)
       .resize({ width: 640, height: 480 })
       .jpeg({ quality: 95 })

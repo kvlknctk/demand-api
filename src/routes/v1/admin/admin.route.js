@@ -11,7 +11,6 @@ const crypto = require('crypto');
 const s3Storage = require('multer-sharp-s3');
 
 // upload image
-
 const s3 = new aws.S3();
 
 aws.config.update({
