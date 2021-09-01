@@ -1,5 +1,6 @@
 module.exports.authService = require('./auth.service');
 module.exports.emailService = require('./email.service');
+module.exports.pushService = require('./push.service');
 module.exports.tokenService = require('./token.service');
 module.exports.userService = require('./user.service');
 module.exports.barcodeService = require('./barcode.service');

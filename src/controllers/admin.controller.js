@@ -3,7 +3,15 @@ const pick = require('../utils/pick');
 /*const { lazySumOrder } = require('../utils/lazySum');*/
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { adminService, userService, productService, orderService, categoryService, companyService } = require('../services');
+const {
+  pushService,
+  adminService,
+  userService,
+  productService,
+  orderService,
+  categoryService,
+  companyService,
+} = require('../services');
 const auth = require('../middlewares/auth');
 const fs = require('file-system');
 /*const sharp = require('sharp');*/
@@ -186,8 +194,9 @@ const getOrders = catchAsync(async (req, res) => {
 const approveOrder = catchAsync(async (req, res) => {
   /*const filter = pick(req.query, ['title', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'relation']);*/
-  const result = await orderService.acknowledgeOrder(req.params.orderId);
-  res.send(result);
+  const order = await orderService.acknowledgeOrder(req.params.orderId);
+  await pushService.pusher.trigger(order.id, 'orderChanged', { order });
+  res.send(order);
 });
 
 const getCategories = catchAsync(async (req, res) => {

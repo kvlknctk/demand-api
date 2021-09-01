@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { orderService, cashierService, productService } = require('../services');
+const { orderService, cashierService, productService, pushService } = require('../services');
 //const { start3DPayment, complete3DPayment } = require('../utils/iyzico');
 const pick = require('../utils/pick');
 const Pusher = require('pusher');
@@ -30,7 +30,7 @@ const createOrder = catchAsync(async (req, res) => {
     lastReadedBarcodeOfCompany: req.body.lastReadedBarcodeOfCompany,
   });
 
-  await pusher.trigger(req.body.lastReadedBarcodeOfCompany, 'orderCompleted', { order });
+  await pushService.pusher.trigger(req.body.lastReadedBarcodeOfCompany, 'orderCompleted', { order });
 
   res.status(httpStatus.CREATED).send({ order });
 });
@@ -68,7 +68,7 @@ const createPayment = catchAsync(async (req, res) => {
     /* TODO:must be add company from barcode */
   });
 
-  await pusher.trigger('this.props.user.id', 'orderCompleted', { order });
+  await pushService.pusher.trigger('this.props.user.id', 'orderCompleted', { order });
 
   /* let iyzicoRequest = {
     card: req.body.card,
@@ -100,17 +100,17 @@ const iyziCallback = catchAsync(async (req, res) => {
       const paidOrder = await orderService.approveOrder(req.body.conversationId, complete3D);
       const balance = await cashierService.getBalance(order.user.id);
       // We trigged on orderCompleted event
-      await pusher.trigger(order.user.id, 'orderCompleted', { paidOrder, balance });
+      await pushService.pusher.trigger(order.user.id, 'orderCompleted', { paidOrder, balance });
       res.status(httpStatus.OK).send('Tamamlandı, yönlendiriliyorsunuz.');
     } else {
       // We trigged on orderDeclined event
-      await pusher.trigger(order.user.id, 'orderDeclined', { complete3D });
+      await pushService.pusher.trigger(order.user.id, 'orderDeclined', { complete3D });
       res.status(httpStatus.OK).send('Ödeme alınamadı, lütfen tekrar deneyiniz.');
     }
   }
 
   if (req.body.status === 'failure') {
-    await pusher.trigger(order.user.id, 'orderDeclined', { errorMessage: 'Hata ' });
+    await pushService.pusher.trigger(order.user.id, 'orderDeclined', { errorMessage: 'Hata ' });
 
     console.log('callback error', req);
     res.status(httpStatus.NOT_MODIFIED).send('Hata oluştu, yeniden denemeniz gerekiyor.');
