@@ -14,9 +14,6 @@ router.route('/').get(auth('getOrders'), orderController.getOrders);
 
 router.route('/callback').post(orderController.iyziCallback);
 
-router
-  .route('/:orderId')
-  .get(auth('getOrder'), orderController.getOrder)
-  .get(auth('updateOrder'), orderController.updateOrder);
+router.route('/:orderId').get(orderController.getOrder);
 
 module.exports = router;

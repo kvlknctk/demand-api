@@ -50,6 +50,7 @@ const envVarsSchema = Joi.object()
     // AWS
     AWS_ACCESS_KEY_ID: Joi.string().description('AWS_KEY_ID required'),
     AWS_SECRET_ACCESS_KEY: Joi.string().description('AWS_SECRET_KEY_ID required'),
+    AWS_SECRET_BUCKET: Joi.string().description('AWS_SECRET_BUCKET required'),
   })
   .unknown();
 
@@ -114,5 +115,6 @@ module.exports = {
   aws: {
     keyId: envVars.AWS_ACCESS_KEY_ID,
     secretKeyId: envVars.AWS_SECRET_ACCESS_KEY,
+    bucket: envVars.AWS_SECRET_BUCKET,
   },
 };

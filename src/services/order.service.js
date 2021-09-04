@@ -52,13 +52,15 @@ const getOrdersByUserId = async (userId) => {
  * @returns {Promise<User>}
  */
 const createOrder = async (allData) => {
-  console.log(allData);
+  //console.log(allData);
   const order = await Order.create({
     /*user: allData.user.id,*/
     items: allData.items,
     // its must be change for session's user.
     company: allData.lastReadedBarcodeOfCompany,
   });
+
+  await order.populate('company').execPopulate();
 
   return order;
 };
