@@ -4,6 +4,7 @@ const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
 const barcodeRoute = require('./barcode.route');
 const adminRoute = require('./admin/admin.route');
+const staffRoute = require('./staff/staff.route');
 const categoryRoute = require('./category.route');
 const initialRoute = require('./initial.route');
 const productRoute = require('./product.route');
@@ -36,6 +37,11 @@ const defaultRoutes = [
   {
     path: '/orders',
     route: orderRoute,
+  },
+  /* Staff */
+  {
+    path: '/staff',
+    route: staffRoute,
   },
   /* Admin */
   {
